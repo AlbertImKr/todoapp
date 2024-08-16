@@ -1,3 +1,5 @@
+from django.shortcuts import redirect
+from django.shortcuts import render
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
@@ -44,3 +46,26 @@ class TodoCompleteView(APIView):
 class TodoDeleteView(generics.DestroyAPIView):
     queryset = Todo.objects.all()
     lookup_field = 'pk'
+
+
+def todo_list(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        if title:
+            Todo.objects.create(title=title)
+        return redirect('todo-list')
+    todos = Todo.objects.all()
+    return render(request, 'todo/todo_list.html', {'todos': todos})
+
+
+def todo_delete(request, pk):
+    todo = Todo.objects.get(pk=pk)
+    todo.delete()
+    return redirect('todo-list')
+
+
+def todo_complete(request, pk):
+    todo = Todo.objects.get(pk=pk)
+    todo.is_completed = True
+    todo.save()
+    return redirect('todo-list')
