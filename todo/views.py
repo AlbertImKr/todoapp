@@ -39,3 +39,8 @@ class TodoCompleteView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Todo.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class TodoDeleteView(generics.DestroyAPIView):
+    queryset = Todo.objects.all()
+    lookup_field = 'pk'
