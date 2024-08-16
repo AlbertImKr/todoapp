@@ -13,3 +13,8 @@ class TodoDetailView(generics.RetrieveAPIView):
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
     lookup_field = 'pk'
+
+
+class TodoCreateView(generics.CreateAPIView):
+    queryset = Todo.objects.all()
+    serializer_class = TodoSerializer
